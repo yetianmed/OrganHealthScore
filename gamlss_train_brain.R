@@ -1,5 +1,7 @@
 rm(list = ls())
-setwd("/Users/yetian/Desktop/UKBiobank/AgeNet/github")
+# set up your working directory using setwd("xxx")
+# install the following R packages if you don't have using install.packages (xxx)
+# you may not need all of them...
 library(ggpointdensity)
 library(cowplot)
 library(patchwork)
@@ -20,6 +22,7 @@ M<-readMat("fake_data.mat")
 nfolds<-10
 zscores<-matrix(data=NA,nrow=nrow(M$data),ncol=1)
 conv<-matrix(data=0,nrow=1,ncol=nfolds)
+bic_val<-matrix(data=0,nrow=1,ncol=nfolds)
 data<-data.frame(cbind(M$age,M$sex,M$site,M$data))
 names(data)<-c("age","sex","site","phenotype")
 
@@ -50,7 +53,7 @@ for (k in 1:nfolds){
     print("Model not converged")
   
   conv[k]<-mdl$converged
-  mdl$sbc
+  bic_val[k]<-mdl$sbc
   
   # Predict new data
   # Compute z-score #
@@ -73,6 +76,7 @@ for (k in 1:nfolds){
   print(paste("Complete",k,"of", nfolds, "folds",sep=" "))
  }
 
+% estimate quantiles
 quantiles<-c(.05, 0.25, 0.5, 0.75, 0.95)
 xM<-matrix(data=NA,ncol=length(quantiles),nrow=101)
 yM<-matrix(data=NA,ncol=length(quantiles),nrow=101)
@@ -94,7 +98,8 @@ for (i in 1:length(quantiles)){
 
 fname<-"quantiles.mat"
 writeMat(fname,xM=xM,yM=yM,xF=xF,yF=yF,data=data,quantiles=quantiles)
-
+# not very good at R in plotting nice figures
+# use plot_quantiles.m to generate some plots. 
 
  
  

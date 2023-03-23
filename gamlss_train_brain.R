@@ -44,7 +44,7 @@ for (k in 1:nfolds){
               sigma.fo=~fp(age,npoly=2),
               nu.fo=~1,
               nu.tau=~1,
-              family=BCT, # for other distribution families, see 
+              family=BCT, # for other distribution families, use help (gamlss.dist)
               data=data_train,
               control=con)
   if (mdl$converged)
